@@ -8,8 +8,7 @@ This repo is a curated collection of my own n8n workflows. Each workflow is docu
 
 ### Included Workflows
 
-- **Gmail Label Automation**: Automatically labels Gmail messages based on custom rules and criteria. See [n8n-gmail-label-automation.md](workflows/n8n-gmail-label-automation.md) for full details.
-
+- **Gmail Label Automation**: Automatically labels Gmail messages based on custom rules and criteria.
 ## How to Use
 
 1. **Clone this Repository**  
