@@ -1,5 +1,5 @@
 {
-  "name": "n8n Gmail Label Automation",
+  "name": "n8n Gmail Label Automation (Template)",
   "nodes": [
     {
       "parameters": {
@@ -14,16 +14,13 @@
       },
       "type": "n8n-nodes-base.gmailTrigger",
       "typeVersion": 1.3,
-      "position": [
-        -720,
-        272
-      ],
-      "id": "e4d0276a-c067-406e-8210-49b8598ad936",
+      "position": [-720, 272],
+      "id": "gmail-trigger-node",
       "name": "Gmail Trigger",
       "credentials": {
         "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "YOUR_GMAIL_CREDENTIAL_NAME"
         }
       }
     },
@@ -33,39 +30,28 @@
         "categories": {
           "categories": [
             {
-              "category": "BPI Credit Card Electronic Statement of Account",
-              "description": "Emails received from BPI for Credit Card Electronic Statement of Account"
+              "category": "Category 1",
+              "description": "Description for Category 1"
             },
             {
-              "category": "PLDT Bills",
-              "description": "Emails Received from PLDT about the Electronic Statement "
+              "category": "Category 2",
+              "description": "Description for Category 2"
             },
             {
-              "category": "Job Application Process",
-              "description": "These are emails received from companies for my job applications, test and examinations, invitation for interviews, application status, and other related for job applications."
-            },
-            {
-              "category": "Google Play Order Receipt",
-              "description": "These are email contain receipt from Google Play"
-            },
-            {
-              "category": "Landbank Mobile Banking Fund Transfer Confirmation",
-              "description": "These are emails received from Landbank for fund transfer confirmations"
+              "category": "Category 3",
+              "description": "Description for Category 3"
             }
           ]
         },
         "options": {
           "fallback": "discard",
-          "systemPromptTemplate": "\"You are an expert text classifier. Analyze the user's text and determine its single, most appropriate category.\n\nYour entire response MUST be a single, valid JSON object.\n\nDO NOT include any markdown code fences (e.g., ```json) or any explanatory text. DO NOT include the JSON Schema definition.\n\nBased on the provided schema, exactly one field must be set to true, and all others must be set to false.\n\nCategories: BPI Credit Card Electronic Statement of Account, PLDT Bills, Job Application Process, Google Play Order Receipt, Landbank Mobile Banking Fund Transfer Confirmation, fallback.\""
+          "systemPromptTemplate": "\"You are an expert text classifier. Analyze the user's text and determine its single, most appropriate category. Your entire response MUST be a single, valid JSON object. DO NOT include any markdown code fences (e.g., ```json) or any explanatory text. DO NOT include the JSON Schema definition. Based on the provided schema, exactly one field must be set to true, and all others must be set to false. Categories: Category 1, Category 2, Category 3, fallback.\""
         }
       },
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
-      "position": [
-        112,
-        688
-      ],
-      "id": "41befcfc-32d6-45d9-8e90-39e132a45281",
+      "position": [112, 688],
+      "id": "text-classifier-node",
       "name": "Text Classifier",
       "onError": "continueRegularOutput"
     },
@@ -74,106 +60,18 @@
         "operation": "addLabels",
         "messageId": "={{ $json.id }}",
         "labelIds": [
-          "Label_4150514738131143803"
+          "YOUR_LABEL_ID_1"
         ]
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
-      "position": [
-        784,
-        944
-      ],
-      "id": "6e692932-9294-4aee-88df-dd243639ecdd",
-      "name": "Google Play Receipts",
-      "webhookId": "33a06a97-ae41-426b-a3a0-e65df4ab9d41",
+      "position": [784, 304],
+      "id": "label-node-1",
+      "name": "Label Category 1",
       "credentials": {
         "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -1072,
-        848
-      ],
-      "id": "7a2f8d82-e7c6-45a0-b6a5-4b1c736056b4",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "operation": "addLabels",
-        "messageId": "={{ $('PLDT Electronic Statement').item.json.id }}",
-        "labelIds": [
-          "Label_7455202629600867167"
-        ]
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        784,
-        528
-      ],
-      "id": "84bac8e6-6f35-4dbe-bd16-444f17d72191",
-      "name": "PLDT Bills1",
-      "webhookId": "33a06a97-ae41-426b-a3a0-e65df4ab9d41",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 500,
-        "filters": {
-          "q": "subject: Google Play Order Receipt",
-          "sender": "googleplay-noreply@google.com"
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -704,
-        1056
-      ],
-      "id": "fec8d0c6-fcd7-444a-89d7-36f1591a71b0",
-      "name": "Google Play Order Receipt",
-      "webhookId": "659ea24c-5f0f-4a74-b096-639558ce7980",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 500,
-        "filters": {
-          "q": "subject:BPI Credit Card Electronic Statement "
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -704,
-        1248
-      ],
-      "id": "f3b9c929-adb9-44fd-9058-19ad862a32e9",
-      "name": "BPI Credit Card Electronic Statement",
-      "webhookId": "659ea24c-5f0f-4a74-b096-639558ce7980",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "YOUR_GMAIL_CREDENTIAL_NAME"
         }
       }
     },
@@ -182,46 +80,18 @@
         "operation": "addLabels",
         "messageId": "={{ $json.id }}",
         "labelIds": [
-          "Label_274602349645260342"
+          "YOUR_LABEL_ID_2"
         ]
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
-      "position": [
-        784,
-        304
-      ],
-      "id": "ee5be75e-7d55-4627-abfe-c813bf4b3e80",
-      "name": "BPI CC EStatement Labeling",
-      "webhookId": "33a06a97-ae41-426b-a3a0-e65df4ab9d41",
+      "position": [784, 528],
+      "id": "label-node-2",
+      "name": "Label Category 2",
       "credentials": {
         "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 100,
-        "filters": {
-          "q": "subject:PLDT Electronic Statement"
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -704,
-        848
-      ],
-      "id": "59cf9767-201a-4f7c-ad9d-ded898568340",
-      "name": "PLDT Electronic Statement",
-      "webhookId": "659ea24c-5f0f-4a74-b096-639558ce7980",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "YOUR_GMAIL_CREDENTIAL_NAME"
         }
       }
     },
@@ -230,132 +100,22 @@
         "operation": "addLabels",
         "messageId": "={{ $json.id }}",
         "labelIds": [
-          "Label_3378399661733220390"
+          "YOUR_LABEL_ID_3"
         ]
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
-      "position": [
-        784,
-        736
-      ],
-      "id": "8d65844a-9d20-4c7c-b2fd-ce373241b0dd",
-      "name": "Job Applications1",
-      "webhookId": "33a06a97-ae41-426b-a3a0-e65df4ab9d41",
+      "position": [784, 736],
+      "id": "label-node-3",
+      "name": "Label Category 3",
       "credentials": {
         "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 500,
-        "filters": {
-          "q": "(\"job application\" OR \"interview\" OR \"next steps\" OR \"schedule\" OR \"phone screen\" OR \"virtual interview\" OR \"job offer\" OR \"hiring team\" OR subject:\"application update\") -subject:alert -subject:newsletter -category:promotions -unsubscribe "
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -704,
-        688
-      ],
-      "id": "c851ef85-3588-4e41-ad3f-46b3f741d9bf",
-      "name": "Job Application Fetching",
-      "webhookId": "659ea24c-5f0f-4a74-b096-639558ce7980",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "llama3.2:latest",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmOllama",
-      "typeVersion": 1,
-      "position": [
-        0,
-        976
-      ],
-      "id": "239dc64c-81b0-4b12-917a-9bfea6a6e9b1",
-      "name": "Ollama Model",
-      "credentials": {
-        "ollamaApi": {
-          "id": "xHuYe0MDGOs9IpBW",
-          "name": "Local Ollama service"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "limit": 500,
-        "filters": {
-          "q": "subject:\"Landbank Mobile Banking Fund Transfer Confirmation\""
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -704,
-        1456
-      ],
-      "id": "3ce30be7-09da-4796-bd35-d3bd836ff2f7",
-      "name": "Landbank Emails",
-      "webhookId": "659ea24c-5f0f-4a74-b096-639558ce7980",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "numberInputs": 5
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        -336,
-        832
-      ],
-      "id": "ce90da34-8a04-40f3-8fcb-07912ca75a20",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
-        "operation": "addLabels",
-        "messageId": "={{ $json.id }}",
-        "labelIds": [
-          "Label_4179892533027843512"
-        ]
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        784,
-        1152
-      ],
-      "id": "df24d427-5f21-4ebc-8833-dbe2516e7885",
-      "name": "Landbank Mobile Banking Fund Transfer Confirmation",
-      "webhookId": "33a06a97-ae41-426b-a3a0-e65df4ab9d41",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "YFSbiBCYxnnGjsdT",
-          "name": "Gmail account"
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "YOUR_GMAIL_CREDENTIAL_NAME"
         }
       }
     }
   ],
-  "pinData": {},
   "connections": {
     "Gmail Trigger": {
       "main": [
@@ -372,151 +132,23 @@
       "main": [
         [
           {
-            "node": "BPI CC EStatement Labeling",
+            "node": "Label Category 1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "PLDT Bills1",
+            "node": "Label Category 2",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Job Applications1",
+            "node": "Label Category 3",
             "type": "main",
             "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Google Play Receipts",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Landbank Mobile Banking Fund Transfer Confirmation",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        []
-      ]
-    },
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "PLDT Electronic Statement",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Google Play Order Receipt",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "BPI Credit Card Electronic Statement",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Job Application Fetching",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Landbank Emails",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Play Order Receipt": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "BPI Credit Card Electronic Statement": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 3
-          }
-        ]
-      ]
-    },
-    "PLDT Electronic Statement": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Job Application Fetching": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Job Applications1": {
-      "main": [
-        []
-      ]
-    },
-    "Ollama Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Text Classifier",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Text Classifier",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Landbank Emails": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 4
           }
         ]
       ]
@@ -524,17 +156,6 @@
   },
   "active": true,
   "settings": {
-    "executionOrder": "v1",
-    "timezone": "Asia/Taipei",
-    "saveExecutionProgress": true,
-    "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "EXmhPjEMZnZoigvb"
-  },
-  "versionId": "43400965-2184-4e53-a90f-e88d7f780347",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
-  },
-  "id": "EXmhPjEMZnZoigvb",
-  "tags": []
+    "timezone": "UTC"
+  }
 }
